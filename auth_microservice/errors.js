@@ -1,0 +1,1 @@
+const DB_CONNECTION_ERROR = ""
