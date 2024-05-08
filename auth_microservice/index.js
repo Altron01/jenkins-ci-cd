@@ -13,7 +13,8 @@ app.get('/health', (req, res) => {
   let status, msg = dbHandler.checkHealth()
   if (status)
     res.status(200).send(msg)
-  res.status(500).send(msg)
+  else
+   res.status(500).send(msg)
 })
 
 app.get('/auth', (req, res) => {
