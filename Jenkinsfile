@@ -1,5 +1,14 @@
 pipeline {
-    agent any
+    agent {
+
+        kubernetes {
+
+            label 'my-kubernetes-agent'
+
+        }
+
+    }
+
 
     triggers {
         issueCommentTrigger('.*test this please.*')
