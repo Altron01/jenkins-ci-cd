@@ -3,15 +3,10 @@ pipeline {
 
         kubernetes {
 
-            label 'my-kubernetes-agent'
+            label 'kubernetes'
 
         }
 
-    }
-
-
-    triggers {
-        issueCommentTrigger('.*test this please.*')
     }
     stages {
         stage('Hello') {
