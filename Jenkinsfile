@@ -1,18 +1,35 @@
 pipeline {
-    agent {
+    agent none
 
-        kubernetes {
-
-            label 'kubernetes'
-
-        }
-
-    }
     stages {
-        stage('Hello') {
+        stage('SonarQube Analysis') {
+            agent {
+                kubernetes {
+                    label 'sonarqube'
+                }
+            }
             steps {
-                echo 'Hello World'
+                ls .
             }
         }
+        //stage('SonarQube Analysis') {
+        //    agent {
+        //        kubernetes {
+        //            label 'sonarqube'
+        //        }
+        //    }
+        //    steps {
+        //        
+        //        sonar-scanner
+        //        }
+        //    }
+        //}
     }
 }
+
+//Set vars
+//Sonarqube
+//Build App
+//Test docker
+//Upload
+//
