@@ -9,7 +9,7 @@ pipeline {
                 }
             }
             steps {
-                ls ./
+                echo "abc"
             }
         }
     }
