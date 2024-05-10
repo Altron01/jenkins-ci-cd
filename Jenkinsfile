@@ -9,7 +9,7 @@ pipeline {
                 }
             }
             steps {
-                ls
+                ls ./
             }
         }
         //stage('SonarQube Analysis') {
