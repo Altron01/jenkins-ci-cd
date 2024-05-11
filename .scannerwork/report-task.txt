@@ -1,6 +1,0 @@
-projectKey=dramirez:microservices-demo
-serverUrl=https://sonarqube.ops.bluontoolbox.com
-serverVersion=10.5.1.90531
-dashboardUrl=https://sonarqube.ops.bluontoolbox.com/dashboard?id=dramirez%3Amicroservices-demo
-ceTaskId=b1eeabcb-c7b9-44ed-9edd-a945e5a118c0
-ceTaskUrl=https://sonarqube.ops.bluontoolbox.com/api/ce/task?id=b1eeabcb-c7b9-44ed-9edd-a945e5a118c0
