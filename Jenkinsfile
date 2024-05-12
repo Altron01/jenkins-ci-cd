@@ -63,9 +63,9 @@ pipeline {
         stage('Run Unit Test') {
             steps {
                 container('node') {
-                    sh 'cd auth_microservice'
-                    sh 'ls'
-                    sh 'npm run test:unit'
+                    dir('auth_microservice') {
+                        sh 'npm run test:unit'
+                    }
                 }
             }
         }
