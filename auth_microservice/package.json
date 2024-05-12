@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node src/index.js",
     "test:unit": "jest unit_test  --coverage=true --coverageDirectory=coverage/unit_tests",
     "test:integration": "jest unit_test  --coverage=true --coverageDirectory=coverage/integration_tests"
   },

@@ -1,4 +1,4 @@
-const tokenHandler = require('../../modules/tokenHandler');
+const tokenHandler = require('../../src/modules/tokenHandler');
 
 test('Test session token generation', () => {
     let startingChaing = 'test_user';
