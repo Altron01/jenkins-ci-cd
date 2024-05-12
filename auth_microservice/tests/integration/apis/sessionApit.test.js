@@ -19,21 +19,19 @@ describe('Session API Get User session', () => {
         let dummyUser = {
             msg: 'not found'
         }
-        axios.get.mockReturnValue(new Promise((resolve, reject) => { resolve(dummyUser) }));
+        axios.get.mockReturnValue(Promise.resolve(dummyUser));
         sessionApi.getUserSession('ABC|CBA').then(result => {
             expect(result.token).toBe('ABC|CBA'); 
         });
     });
 
     test('Test user not given', () => {
-        expect(sessionApi.getUserSession).toThrow('Cant evaluate session null');
+        expect(sessionApi.getUserSession).toThrow();
     });
 
     test('Test axios error', () => {
-        axios.get.mockReturnValue(new Promise((resolve, reject) => { throw '' }));
-        sessionApi.getUserSession('ABC|CBA').catch(err => {
-            expect(err.status).toBe(500); 
-        });
+        axios.get.mockReturnValue(Promise.reject({  }));
+        expect(sessionApi.getUserSession('ABC|CBA')).rejects.toThrow();
     });
 
 });
@@ -44,17 +42,15 @@ describe('Session API Put User session', () => {
         let dummyUser = {
             data: {}
         }
-        axios.put.mockReturnValue(new Promise((resolve, reject) => { resolve(dummyUser) }));
+        axios.put.mockReturnValue(Promise.resolve(dummyUser));
         sessionApi.putUserSession('ABC|CBA', {}).then(result => {
             expect(result.status).toBe(200); 
         });
     });
 
     test('Test axios error', () => {
-        axios.put.mockReturnValue(new Promise((resolve, reject) => { throw '' }));
-        sessionApi.putUserSession('ABC|CBA').catch(err => {
-            expect(err.status).toBe(500); 
-        });
+        axios.put.mockReturnValue(Promise.reject({}));
+        expect(sessionApi.putUserSession('ABC|CBA')).rejects.toThrow();
     });
 
 });

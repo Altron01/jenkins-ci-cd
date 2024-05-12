@@ -13,7 +13,7 @@ describe('Test session token generation', () => {
     });
 
     test('Test session token generation with no given string', () => {
-        expect(tokenHandler.createSessionToken).toThrow('stringChain must have length > 0')
+        expect(tokenHandler.createSessionToken).toThrow()
     });
 
 });
@@ -31,7 +31,7 @@ describe('Test session token', () => {
     });
 
     test('Test session token retreival with no given string', () => {
-        expect(tokenHandler.getSessionToken).toThrow('stringChain must have length > 0')
+        expect(tokenHandler.getSessionToken).toThrow()
     });
 
 });

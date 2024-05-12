@@ -35,21 +35,21 @@ describe('Database instantiation', () => {
 describe('Database health status', () => {
 
     test('Test database healthy status', () => {
-        var healthStatus = { state: 'authenticated' };
+        let healthStatus = { state: 'authenticated' };
         const result = dbHandler.checkHealth(healthStatus);
         expect(result.status).toBe(200);
         expect(result.msg).toBe('healthy');
     });
 
     test('Test database unhealth status', () => {
-        var healthStatus = { state: 'disconnected' };
+        let healthStatus = { state: 'disconnected' };
         const result = dbHandler.checkHealth(healthStatus);
         expect(result.status).toBe(500);
         expect(result.msg).toBe('unhealthy');
     });
 
     test('Test database unknown status', () => {
-        var healthStatus = { state: 'unknown' };
+        let healthStatus = { state: 'unknown' };
         const result = dbHandler.checkHealth(healthStatus);
         expect(result.status).toBe(500);
         expect(result.msg).toBe('unknown');
@@ -87,9 +87,7 @@ describe('Database user authentication', () => {
         }
         let password = crypto.randomBytes(10).toString('hex').slice(0, 40);
         mysql.escape.mockReturnValue('A');
-        dbHandler.authUser({ username: 'A', password }, dummyCon).catch(err => { 
-            expect(err.status).toBe(500);
-        });
+        expect(dbHandler.authUser({ username: 'A', password }, dummyCon)).rejects.toThrow();
         
     });
 

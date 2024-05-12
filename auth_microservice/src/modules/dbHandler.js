@@ -30,11 +30,12 @@ function checkHealth(con=connection) {
     return { status: 500, msg: "unknown" }
 }
 
-function authUser(data={username: '', password: ''}, con=connection) {
+function authUser(data=null, con=connection) {
     return new Promise((resolve, reject) => {
+        if (data === null || data === undefined) throw { status: 400, msg: 'no uesr data sent' }
         var query = "SELECT username FROM users WHERE username = " + mysql.escape(data.username) + " AND password = " + mysql.escape(data.password) + " LIMIT 1"
         con.query(query, function (err, result) {
-            if (err) throw { status: 500, err };
+            if (err) reject(new Error({ status: 500, err }));
             if (result.length > 0) {
                 return resolve({ status: 200, msg: 'authenticated' })
             }
