@@ -9,7 +9,7 @@ describe('Session API Get User session', () => {
         let dummyUser = {
             data: {}
         }
-        axios.get.mockReturnValue(new Promise((resolve, reject) => { resolve(dummyUser) }));
+        axios.get.mockReturnValue(Promise.resolve(dummyUser));
         sessionApi.getUserSession('ABC|CBA').then(result => {
             expect(result.token).toBe('ABC|CBA'); 
         });
@@ -30,7 +30,7 @@ describe('Session API Get User session', () => {
     });
 
     test('Test axios error', () => {
-        axios.get.mockReturnValue(Promise.reject({  }));
+        axios.get.mockReturnValue(Promise.reject(new Error({  })));
         expect(sessionApi.getUserSession('ABC|CBA')).rejects.toThrow();
     });
 
@@ -49,7 +49,7 @@ describe('Session API Put User session', () => {
     });
 
     test('Test axios error', () => {
-        axios.put.mockReturnValue(Promise.reject({}));
+        axios.put.mockReturnValue(Promise.reject(new Error({})));
         expect(sessionApi.putUserSession('ABC|CBA')).rejects.toThrow();
     });
 

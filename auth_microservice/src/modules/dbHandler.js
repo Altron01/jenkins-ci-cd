@@ -32,7 +32,7 @@ function checkHealth(con=connection) {
 
 function authUser(data=null, con=connection) {
     return new Promise((resolve, reject) => {
-        if (data === null || data === undefined) throw { status: 400, msg: 'no uesr data sent' }
+        if (data === null || data === undefined) throw new Error({ status: 400, msg: 'no uesr data sent' });
         var query = "SELECT username FROM users WHERE username = " + mysql.escape(data.username) + " AND password = " + mysql.escape(data.password) + " LIMIT 1"
         con.query(query, function (err, result) {
             if (err) reject(new Error({ status: 500, err }));
