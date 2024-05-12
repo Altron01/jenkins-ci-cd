@@ -1,6 +1,5 @@
 const axios = require('axios');
-const tokenHandler = require('../../src/modules/tokenHandler');
-const sessionApi = require('../../src/apis/sessionApi');
+const sessionApi = require('../../../src/apis/sessionApi');
 
 jest.mock('axios');
 

@@ -1,5 +1,5 @@
 const mysql = require('mysql');
-const dbHandler = require('../../src/modules/dbHandler');
+const dbHandler = require('../../../src/modules/dbHandler');
 
 jest.mock('mysql');
 

@@ -1,4 +1,4 @@
-const tokenHandler = require('../../src/modules/tokenHandler');
+const tokenHandler = require('../../../src/modules/tokenHandler');
 
 describe('Test session token generation', () => {
 
