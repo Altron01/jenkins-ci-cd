@@ -1,18 +1,20 @@
 pipeline {
-    agent none
+    
+    agent {
+        kubernetes {
+            yaml '''
+            spec:
+              containers:
+                - name: node
+                  image: node:20.13.1-bullseye-slim
+                - name: sonarqube
+                  image: sonarsource/sonar-scanner-cli:5.0.1
+            '''
+        }
+    }
 
     stages {
         stage('Run Unit Test') {
-            agent {
-                kubernetes {
-                    yaml '''
-                    spec:
-                      containers:
-                        - name: node
-                          image: node:20.13.1-bullseye-slim
-                    '''
-                }
-            }
             steps {
                 container('node') {
                     sh 'cd auth_microservice'
