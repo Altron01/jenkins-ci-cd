@@ -74,6 +74,7 @@ describe('Database user authentication', () => {
         let dummyCon = {
             query: function (q, f) { f(null, []) }
         }
+        let password = crypto.randomBytes(10).toString('hex').slice(0, 40);
         mysql.escape.mockReturnValue('A');
         dbHandler.authUser({ username: 'A', password }, dummyCon).then(result => {
             expect(result.status).toBe(404);
@@ -84,6 +85,7 @@ describe('Database user authentication', () => {
         let dummyCon = {
             query: function (q, f) { f('This is a test', []) }
         }
+        let password = crypto.randomBytes(10).toString('hex').slice(0, 40);
         mysql.escape.mockReturnValue('A');
         dbHandler.authUser({ username: 'A', password }, dummyCon).catch(err => { 
             expect(err.status).toBe(500);
