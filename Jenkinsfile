@@ -64,6 +64,7 @@ pipeline {
             steps {
                 container('node') {
                     dir('auth_microservice') {
+                        sh 'npm install --dev'
                         sh 'npm run test:unit'
                     }
                 }
