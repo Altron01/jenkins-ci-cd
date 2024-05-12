@@ -1,24 +1,23 @@
 const constants = require('../contants')
 const mysql = require('mysql');
 
-
 var connection = null;
 
-function startConnection() {
-    if (connection !== null)
-        return connection;
-    connection = mysql.createConnection({
+function startConnection(con=connection) {
+    if (con !== null)
+        return con;
+    con = mysql.createConnection({
         host:     constants.AUTH_DB_HOST,
         user:     constants.AUTH_DB_USER,
         password: constants.AUTH_DB_PASSWORD,
         database: constants.AUTH_DB_DB_NAME
     });
 
-    connection.connect(function(err) {
+    con.connect(function(err) {
         if (err) throw err;
         console.log("Connected!");
     });
-    return connection;
+    return con;
 }
 
 function checkHealth(con=connection) { 
@@ -31,15 +30,15 @@ function checkHealth(con=connection) {
     return { status: 500, msg: "unknown" }
 }
 
-function authUser(data, con=connection) {
+function authUser(data={username: '', password: ''}, con=connection) {
     return new Promise((resolve, reject) => {
         var query = "SELECT username FROM users WHERE username = " + mysql.escape(data.username) + " AND password = " + mysql.escape(data.password) + " LIMIT 1"
         con.query(query, function (err, result) {
-            if (err) throw err;
+            if (err) throw { status: 500, err };
             if (result.length > 0) {
-                return resolve({ msg: 'authenticated' })
+                return resolve({ status: 200, msg: 'authenticated' })
             }
-            return reject({ msg: 'user not found' })
+            return resolve({ status: 404, msg: 'user not found' })
         });
     })
 }

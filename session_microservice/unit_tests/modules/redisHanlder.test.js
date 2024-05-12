@@ -1,12 +1,29 @@
 const redis = require('redis');
-const constants = require('../contants');
 
-var client = null;
+jest.mock('redis');
+
+
+describe('Redis connection instantiate', () => {
+
+    test('Test Redis creation instance first time', () => {
+        let clientResponse = function (res, f) {}
+        redis.createClient.mockReturnValue(clientResponse);
+        const result = dbHandler.startConnection();
+        expect(result.status).toBe(200);
+    });
+
+    test('Test database creation instance second time', () => {
+        let dummy = { status: 200 };
+        const result = dbHandler.startConnection(dummy);
+        expect(result.status).toBe(200);
+    });
+
+});
 
 function startConnection() {
     if (client !== null)
         return client;
-    client = redis.createClient({
+    redis.createClient({
         url: constants.REDIS_URL
     }).on('connect', function () {
         console.log('connected');
@@ -49,5 +66,3 @@ function putSession(sessionToken, data, con=client) {
         })
     })
 }
-
-module.exports = { startConnection, getSession, putSession }

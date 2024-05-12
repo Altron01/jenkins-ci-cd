@@ -1,9 +1,9 @@
-const express = require('express')
-const bodyParser = require('body-parser')
-const dbHandler = require('./modules/dbHandler')
-const tokenHandler = require('./modules/tokenHandler')
-const sessionApi = require('./apis/sessionApi')
-const constants = require('./contants')
+const express = require('express');
+const bodyParser = require('body-parser');
+const dbHandler = require('./modules/dbHandler');
+const tokenHandler = require('./modules/tokenHandler');
+const sessionApi = require('./apis/sessionApi');
+const constants = require('./contants');
 
 const app = express()
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -20,7 +20,7 @@ app.get('/auth', (req, res) => {
   var body = req.body;
   if (body.session) {
     sessionApi.getUserSession(body.session).then(session => { 
-      if (session.msg == "not found")
+      if (session.status == 404)
         res.status(403).send({
           msg: session.msg
         })
