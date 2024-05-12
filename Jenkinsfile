@@ -7,18 +7,28 @@ pipeline {
               containers:
                 - name: node
                   image: node:20.13.1-bullseye-slim
+                  tty: false
+                  volumeMounts:
+                    - mountPath: "/home/jenkins/agent"
+                    name: "workspace-volume"
+                    readOnly: false
+                  workingDir: "/home/jenkins/agent"
+                  args:
+                    - "9999999"
+                  command:
+                    - "sleep"
                 - name: sonarqube
                   image: sonarsource/sonar-scanner-cli:5.0.1
-                tty: false
-                volumeMounts:
-                  - mountPath: "/home/jenkins/agent"
-                  name: "workspace-volume"
-                  readOnly: false
-                workingDir: "/home/jenkins/agent"
-                args:
-                  - "9999999"
-                command:
-                  - "sleep"
+                  tty: false
+                  volumeMounts:
+                    - mountPath: "/home/jenkins/agent"
+                    name: "workspace-volume"
+                    readOnly: false
+                  workingDir: "/home/jenkins/agent"
+                  args:
+                    - "9999999"
+                  command:
+                    - "sleep"
               - env:
                 - name: "JENKINS_SECRET"
                   value: "********"
