@@ -9,12 +9,11 @@ const app = express()
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+dbHandler.startConnection();
+
 app.get('/health', (req, res) => {
-  let status, msg = dbHandler.checkHealth()
-  if (status)
-    res.status(200).send(msg)
-  else
-   res.status(500).send(msg)
+  let check = dbHandler.checkHealth()
+  res.status(check['status']).send(check)
 })
 
 app.get('/auth', (req, res) => {

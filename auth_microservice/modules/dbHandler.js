@@ -1,33 +1,39 @@
 const constants = require('../contants')
+const mysql = require('mysql');
 
-var mysql = require('mysql');
 
-var con = mysql.createConnection({
-    host:     constants.AUTH_DB_HOST,
-    user:     constants.AUTH_DB_USER,
-    password: constants.AUTH_DB_PASSWORD,
-    database: constants.AUTH_DB_DB_NAME
-});
+var connection = null;
 
-con.connect(function(err) {
-    if (err) throw err;
-    console.log("Connected!");
-});
+function startConnection() {
+    if (connection !== null)
+        return connection;
+    connection = mysql.createConnection({
+        host:     constants.AUTH_DB_HOST,
+        user:     constants.AUTH_DB_USER,
+        password: constants.AUTH_DB_PASSWORD,
+        database: constants.AUTH_DB_DB_NAME
+    });
 
-function checkHealth() { 
-    if(con.state === 'disconnected'){
-        return false, { msg: "unhealthy" }
-    }
-    if(con.state === 'authenticated'){
-        return true, { msg: "healthy" }
-    }
-    return false, { msg: "unknown" }
+    connection.connect(function(err) {
+        if (err) throw err;
+        console.log("Connected!");
+    });
+    return connection;
 }
 
-function authUser(data) {
+function checkHealth(con=connection) { 
+    if(con.state === 'disconnected'){
+        return { status: 500, msg: "unhealthy" }
+    }
+    if(con.state === 'authenticated'){
+        return { status: 200, msg: "healthy" }
+    }
+    return { status: 500, msg: "unknown" }
+}
+
+function authUser(data, con=connection) {
     return new Promise((resolve, reject) => {
         var query = "SELECT username FROM users WHERE username = " + mysql.escape(data.username) + " AND password = " + mysql.escape(data.password) + " LIMIT 1"
-        console.log(query)
         con.query(query, function (err, result) {
             if (err) throw err;
             if (result.length > 0) {
@@ -38,4 +44,4 @@ function authUser(data) {
     })
 }
 
-module.exports = { checkHealth, authUser }
+module.exports = { startConnection, checkHealth, authUser }
