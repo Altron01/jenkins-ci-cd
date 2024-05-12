@@ -25,7 +25,7 @@ function putUserSession(token, data) {
                 key: token,
                 data
             }))
-        axios.put(constants.SESSION_MS_ENDPOINT.concat('/session'), {
+        axios.put(constants.SESSION_MS_ENDPOINT + '/session', {
                 key: token,
                 data
             },
