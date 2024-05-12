@@ -50,6 +50,8 @@ pipeline {
                     dir('auth_microservice') {
                         sh 'npm install --dev'
                         sh 'npm run test:unit'
+                        sh 'cp coverage/unit/lcov.info coverage/unit-lcov.info'
+                        sh 'cp coverage/integration/lcov.info coverage/integration-lcov.info'
                     }
                 }
             }
