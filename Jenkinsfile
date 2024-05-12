@@ -64,8 +64,8 @@ pipeline {
             steps {
                 container('node') {
                     sh 'cd auth_microservice'
+                    sh 'ls'
                     sh 'npm run test:unit'
-                    
                 }
             }
         }
