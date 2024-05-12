@@ -5,7 +5,7 @@ const constants = require('../contants');
 function getUserSession(token='') { 
     session = tokenHandler.getSessionToken(token);
     return new Promise((resolve, reject) => { 
-        axios.get(constants.SESSION_MS_ENDPOINT.concat('/session'), {
+        axios.get(constants.SESSION_MS_ENDPOINT + '/session', {
             params: {
                 session
             }
