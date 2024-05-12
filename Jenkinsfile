@@ -7,8 +7,9 @@ pipeline {
                 kubernetes {
                     yaml '''
                     spec:
-                      - name: node
-                        image: node:20.13.1-bullseye-slim
+                      containers:
+                        - name: node
+                          image: node:20.13.1-bullseye-slim
                     '''
                 }
             }
