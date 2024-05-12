@@ -10,38 +10,51 @@ pipeline {
                   tty: false
                   volumeMounts:
                     - mountPath: "/home/jenkins/agent"
-                    name: "workspace-volume"
-                    readOnly: false
+                      name: "workspace-volume"
+                      readOnly: false
                   workingDir: "/home/jenkins/agent"
                   args:
                     - "9999999"
                   command:
                     - "sleep"
+                  env:
+                    - name: "JENKINS_SECRET"
+                      value: "********"
+                    - name: "JENKINS_TUNNEL"
+                      value: "10.6.0.87:8081"
+                    - name: "JENKINS_AGENT_NAME"
+                      value: "test-pipeline-30-42qsm-x7zcp-d45dn"
+                    - name: "JENKINS_NAME"
+                      value: "test-pipeline-30-42qsm-x7zcp-d45dn"
+                    - name: "JENKINS_AGENT_WORKDIR"
+                      value: "/home/jenkins/agent"
+                    - name: "JENKINS_URL"
+                      value: "http://10.6.0.87:8080/"
                 - name: sonarqube
                   image: sonarsource/sonar-scanner-cli:5.0.1
                   tty: false
                   volumeMounts:
                     - mountPath: "/home/jenkins/agent"
-                    name: "workspace-volume"
-                    readOnly: false
+                      name: "workspace-volume"
+                      readOnly: false
                   workingDir: "/home/jenkins/agent"
                   args:
                     - "9999999"
                   command:
                     - "sleep"
-              - env:
-                - name: "JENKINS_SECRET"
-                  value: "********"
-                - name: "JENKINS_TUNNEL"
-                  value: "10.6.0.87:8081"
-                - name: "JENKINS_AGENT_NAME"
-                  value: "test-pipeline-30-42qsm-x7zcp-d45dn"
-                - name: "JENKINS_NAME"
-                  value: "test-pipeline-30-42qsm-x7zcp-d45dn"
-                - name: "JENKINS_AGENT_WORKDIR"
-                  value: "/home/jenkins/agent"
-                - name: "JENKINS_URL"
-                  value: "http://10.6.0.87:8080/"
+                  env:
+                    - name: "JENKINS_SECRET"
+                      value: "********"
+                    - name: "JENKINS_TUNNEL"
+                      value: "10.6.0.87:8081"
+                    - name: "JENKINS_AGENT_NAME"
+                      value: "test-pipeline-30-42qsm-x7zcp-d45dn"
+                    - name: "JENKINS_NAME"
+                      value: "test-pipeline-30-42qsm-x7zcp-d45dn"
+                    - name: "JENKINS_AGENT_WORKDIR"
+                      value: "/home/jenkins/agent"
+                    - name: "JENKINS_URL"
+                      value: "http://10.6.0.87:8080/"
             '''
         }
     }
