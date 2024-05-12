@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/index.js",
-    "test:unit": "jest unit_test  --coverage", // --coverageDirectory=coverage/unit_tests
+    "test:unit": "jest unit_test  --coverage",
     "test:integration": "jest unit_test  --coverage"
   },
   "author": "",
