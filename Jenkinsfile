@@ -55,11 +55,11 @@ pipeline {
             }
         }
         stage('SonarQube Analysis') {
-            agent {
-                kubernetes {
-                    inheritFrom 'sonarqube'
-                }
-            }
+            //agent {
+            //    kubernetes {
+            //        inheritFrom 'sonarqube'
+            //    }
+            //}
             steps {
                 container('sonarqube') {
                     withSonarQubeEnv(installationName: 'SonarQube') { // If you have configured more than one global server connection, you can specify its name as configured in Jenkins
