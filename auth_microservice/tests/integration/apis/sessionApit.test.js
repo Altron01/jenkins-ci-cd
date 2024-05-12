@@ -25,6 +25,17 @@ describe('Session API Get User session', () => {
         });
     });
 
+    test('Test user not given', () => {
+        expect(sessionApi.getUserSession).toThrow('Cant evaluate session null');
+    });
+
+    test('Test axios error', () => {
+        axios.get.mockReturnValue(new Promise((resolve, reject) => { throw '' }));
+        sessionApi.getUserSession('ABC|CBA').catch(err => {
+            expect(err.status).toBe(500); 
+        });
+    });
+
 });
 
 describe('Session API Put User session', () => {
@@ -39,27 +50,11 @@ describe('Session API Put User session', () => {
         });
     });
 
-});
+    test('Test axios error', () => {
+        axios.put.mockReturnValue(new Promise((resolve, reject) => { throw '' }));
+        sessionApi.putUserSession('ABC|CBA').catch(err => {
+            expect(err.status).toBe(500); 
+        });
+    });
 
-//function putUserSession(token, data) { 
-//    session = tokenHandler.getSessionToken(token)
-//    return new Promise((resolve, reject) => { 
-//        console.log(JSON.stringify({
-//                key: token,
-//                data
-//            }))
-//        axios.put(constants.SESSION_MS_ENDPOINT.concat('/session'), {
-//                key: token,
-//                data
-//            },
-//        ).then(res => { 
-//            resolve({
-//                msg: 'success'
-//            })
-//        }).catch(err => {
-//            reject(err)
-//        })
-//    })
-//}
-//
-//module.exports = { getUserSession, putUserSession }
+});

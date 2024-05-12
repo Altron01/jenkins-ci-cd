@@ -1,6 +1,6 @@
 const crypto = require("crypto");
 
-function createSessionToken(stringChain = '') {
+function createSessionToken(stringChain='') {
     if (stringChain.length == 0) throw 'stringChain must have length > 0'
     return (stringChain.concat("|")).concat(crypto.randomBytes(40).toString('hex').slice(0, 40))
 }

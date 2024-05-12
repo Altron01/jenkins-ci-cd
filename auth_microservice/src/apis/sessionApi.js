@@ -2,9 +2,10 @@ const axios = require('axios');
 const tokenHandler = require('../modules/tokenHandler');
 const constants = require('../contants');
 
-function getUserSession(token='') { 
+function getUserSession(token='') {
+    if (token.length == 0) throw 'Cant evaluate session null';
     session = tokenHandler.getSessionToken(token);
-    return new Promise((resolve, reject) => { 
+    return new Promise((resolve, reject) => {
         axios.get(constants.SESSION_MS_ENDPOINT + '/session', {
             params: {
                 session
@@ -14,8 +15,8 @@ function getUserSession(token='') {
                 token,
                 data: (res.msg === "not found" ? null : res.data)
             });
-        }).catch(err => { reject(err) });
-    })
+        }).catch(err => { reject({ status: 500, err }) });
+    });
 }
 
 function putUserSession(token, data) { 
@@ -35,7 +36,7 @@ function putUserSession(token, data) {
                 msg: 'success'
             });
         }).catch(err => {
-            reject(err);
+            reject({ status: 500, err });
         })
     })
 }
