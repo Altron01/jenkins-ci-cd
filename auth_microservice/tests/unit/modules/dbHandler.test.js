@@ -1,4 +1,5 @@
 const mysql = require('mysql');
+const crypto = require("crypto");
 const dbHandler = require('../../../src/modules/dbHandler');
 
 jest.mock('mysql');
@@ -62,8 +63,9 @@ describe('Database user authentication', () => {
         let dummyCon = {
             query: function (q, f) { f(null, [ 0 ]) }
         }
+        let password = crypto.randomBytes(10).toString('hex').slice(0, 40);
         mysql.escape.mockReturnValue('A');
-        dbHandler.authUser({ username: 'A', password: 'A' }, dummyCon).then(result => {
+        dbHandler.authUser({ username: 'A', password }, dummyCon).then(result => {
             expect(result.status).toBe(200);
         });
     });
@@ -73,7 +75,7 @@ describe('Database user authentication', () => {
             query: function (q, f) { f(null, []) }
         }
         mysql.escape.mockReturnValue('A');
-        dbHandler.authUser({ username: 'A', password: 'A' }, dummyCon).then(result => {
+        dbHandler.authUser({ username: 'A', password }, dummyCon).then(result => {
             expect(result.status).toBe(404);
         });
     });
@@ -83,7 +85,7 @@ describe('Database user authentication', () => {
             query: function (q, f) { f('This is a test', []) }
         }
         mysql.escape.mockReturnValue('A');
-        dbHandler.authUser({ username: 'A', password: 'A' }, dummyCon).catch(err => { 
+        dbHandler.authUser({ username: 'A', password }, dummyCon).catch(err => { 
             expect(err.status).toBe(500);
         });
         

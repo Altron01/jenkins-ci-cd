@@ -1,4 +1,4 @@
-var crypto = require("crypto");
+const crypto = require("crypto");
 
 function createSessionToken(stringChain = '') {
     if (stringChain.length == 0) throw 'stringChain must have length > 0'

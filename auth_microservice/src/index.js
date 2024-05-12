@@ -6,6 +6,7 @@ const sessionApi = require('./apis/sessionApi');
 const constants = require('./contants');
 
 const app = express()
+app.disable("x-powered-by");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
