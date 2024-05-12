@@ -1,19 +1,25 @@
-const redis = require('redis')
-const constants = require('../contants')
+const redis = require('redis');
+const constants = require('../contants');
 
-var client = redis.createClient({
-    url: constants.REDIS_URL
-}).on('connect', function () {
-    console.log('connected');
-}).on('error', function(err) {
-    console.log(err);
-})
+var client = null;
 
-client.connect()
+function startConnection() {
+    if (client !== null)
+        return client;
+    redis.createClient({
+        url: constants.REDIS_URL
+    }).on('connect', function () {
+        console.log('connected');
+    }).on('error', function (err) {
+        console.log(err);
+    })
+    client.connect();
+    return client;
+}
 
-function getSession(sessionToken) {
+function getSession(sessionToken, con=client) {
     return new Promise((resolve, reject) => { 
-        client.get(sessionToken).then(res => { 
+        con.get(sessionToken).then(res => { 
             if (res === null) {
                 resolve({
                     msg: 'not found',
@@ -32,16 +38,16 @@ function getSession(sessionToken) {
 }
 
 
-function putSession(sessionToken, data) {
+function putSession(sessionToken, data, con=client) {
     return new Promise((resolve, reject) => {
-        client.set(sessionToken, data).then(res => { 
+        con.set(sessionToken, data).then(res => { 
             resolve({
                 msg: 'session created'
-            })
+            });
         }).catch(err => { 
-            reject(err)
+            reject(err);
         })
     })
 }
 
-module.exports = { getSession, putSession }
+module.exports = { startConnection, getSession, putSession }

@@ -2,6 +2,24 @@ pipeline {
     agent none
 
     stages {
+        stage('Run Unit Test') {
+            agent {
+                kubernetes {
+                    yaml '''
+                    spec:
+                      - name: node
+                        image: node:20.13.1-bullseye-slim
+                    '''
+                }
+            }
+            steps {
+                container('node') {
+                    sh 'cd auth_microservice'
+                    sh 'npm run test:unit'
+                    
+                }
+            }
+        }
         stage('SonarQube Analysis') {
             agent {
                 kubernetes {
