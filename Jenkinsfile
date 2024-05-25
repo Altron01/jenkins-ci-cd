@@ -114,7 +114,7 @@ pipeline {
                 }
                 container('docker') {
                     dir('auth_microservice') {
-                        sh "docker build -t abc:${VERSION} ."
+                        sh "docker build -t abc:0.1.0 ."
                     }
                 }
             }
