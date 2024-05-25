@@ -7,42 +7,36 @@ pipeline {
               containers:
                 - name: node
                   image: node:20.13.1-bullseye-slim
-                  tty: false
+                  workingDir: "/home/jenkins/agent"
+                  command:
+                    - sleep
+                  args:
+                    - "99999999"
+                  env:
+                    - name: "JENKINS_AGENT_WORKDIR"
+                      value: "/home/jenkins/agent"
                   volumeMounts:
                     - mountPath: "/home/jenkins/agent"
                       name: "workspace-volume"
                       readOnly: false
-                  workingDir: "/home/jenkins/agent"
-                  args:
-                    - "9999999"
-                  command:
-                    - "sleep"
-                  env:
-                    - name: "JENKINS_SECRET"
-                      value: "********"
-                    - name: "JENKINS_AGENT_WORKDIR"
-                      value: "/home/jenkins/agent"
                 - name: sonarqube
                   image: sonarsource/sonar-scanner-cli:5.0.1
+                  workingDir: "/home/jenkins/agent"
                   tty: false
+                  command:
+                    - sleep
+                  args:
+                    - "99999999"
+                  env:
+                    - name: "JENKINS_AGENT_WORKDIR"
+                      value: "/home/jenkins/agent"
                   volumeMounts:
                     - mountPath: "/home/jenkins/agent"
                       name: "workspace-volume"
                       readOnly: false
-                  workingDir: "/home/jenkins/agent"
-                  args:
-                    - "9999999"
-                  command:
-                    - "sleep"
-                  env:
-                    - name: "JENKINS_SECRET"
-                      value: "********"
-                    - name: "JENKINS_AGENT_WORKDIR"
-                      value: "/home/jenkins/agent"
             '''
         }
     }
-
     stages {
         stage('Run Unit Test') {
             steps {
@@ -57,11 +51,6 @@ pipeline {
             }
         }
         stage('SonarQube Analysis') {
-            //agent {
-            //    kubernetes {
-            //        inheritFrom 'sonarqube'
-            //    }
-            //}
             steps {
                 container('sonarqube') {
                     withSonarQubeEnv(installationName: 'SonarQube') { // If you have configured more than one global server connection, you can specify its name as configured in Jenkins
@@ -75,6 +64,55 @@ pipeline {
                     // Parameter indicates whether to set pipeline to UNSTABLE if Quality Gate fails
                     // true = set pipeline to UNSTABLE, false = don't
                     waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+        stage('Build images') {
+            agent {
+                kubernetes {
+                    yaml '''
+                    spec:
+                      containers:
+                        - name: node
+                          image: node:20.13.1-bullseye-slim
+                          command:
+                            - cat
+                          volumeMounts:
+                            - mountPath: "/home/jenkins/agent"
+                              name: "workspace-volume"
+                              readOnly: false
+                          workingDir: "/home/jenkins/agent"
+                          env:
+                            - name: "JENKINS_AGENT_WORKDIR"
+                              value: "/home/jenkins/agent"
+                        - name: docker
+                          image: docker:dind
+                          command:
+                            - cat
+                          volumeMounts:
+                            - mountPath: "/home/jenkins/agent"
+                              name: "workspace-volume"
+                              readOnly: false
+                          workingDir: "/home/jenkins/agent"
+                          env:
+                            - name: "JENKINS_AGENT_WORKDIR"
+                              value: "/home/jenkins/agent"
+                    '''
+                }
+            }
+            steps {
+                container('node') {
+                    dir('auth_microservice') {
+                        //def appVersion = "npm pkg get version"
+                        //sh "echo $appVersion"
+                        //sh "VERSION=${appVersion}-${BUILD_NUMBER}"
+                        sh "VERSION=0.1.0-1234567"
+                    }
+                }
+                container('docker') {
+                    dir('auth_microservice') {
+                        sh "docker build -t abc:${VERSION} ."
+                    }
                 }
             }
         }
