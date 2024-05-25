@@ -71,7 +71,6 @@ pipeline {
                 kubernetes {
                     yaml '''
                     spec:
-                      privileged: true
                       containers:
                         - name: node
                           image: node:20.13.1-bullseye-slim
@@ -89,6 +88,8 @@ pipeline {
                               value: "/home/jenkins/agent"
                         - name: docker
                           image: docker:dind
+                          securityContext:
+                            privileged: true
                           command:
                             - sleep
                           args:
