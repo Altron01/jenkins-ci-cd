@@ -22,7 +22,6 @@ pipeline {
                 - name: sonarqube
                   image: sonarsource/sonar-scanner-cli:5.0.1
                   workingDir: "/home/jenkins/agent"
-                  tty: false
                   command:
                     - sleep
                   args:
@@ -76,7 +75,9 @@ pipeline {
                         - name: node
                           image: node:20.13.1-bullseye-slim
                           command:
-                            - cat
+                            - sleep
+                          args:
+                            - "99999999"
                           volumeMounts:
                             - mountPath: "/home/jenkins/agent"
                               name: "workspace-volume"
@@ -88,7 +89,9 @@ pipeline {
                         - name: docker
                           image: docker:dind
                           command:
-                            - cat
+                            - sleep
+                          args:
+                            - "99999999"
                           volumeMounts:
                             - mountPath: "/home/jenkins/agent"
                               name: "workspace-volume"
