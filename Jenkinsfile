@@ -72,6 +72,7 @@ pipeline {
             }
             steps {
                 dir('auth_microservice') {
+                    sh 'su jenkins'
                     sh "docker build -t abc:0.1.0 ."
                 }
             }
