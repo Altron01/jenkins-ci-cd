@@ -75,8 +75,16 @@ pipeline {
             }
             steps {
                 dir("auth_microservice") {
-                    sh "docker login -u ${env.HARBOR_USER} -p ${env.HARBOR_PASSWORD} ${env.HARBOR_URL}"
-                    sh "docker build -t auth:\$(echo \$(./.scripts/get-version))-\$(echo \$(date +%s)) ."
+                    sh """
+                      docker login -u ${env.HARBOR_USER} -p ${env.HARBOR_PASSWORD} ${env.HARBOR_URL}
+                      VERSION=\$(./.scripts/get-version)
+                      TIMESTAMP=\$(date +%s)
+                      docker build -t auth:\$VERSION-\$TIMESTAMP .
+                      docker tag auth:\$VERSION-\$TIMESTAMP harbor.ops.bluontoolbox.com/latest/auth:\$VERSION-\$TIMESTAMP
+                      docker push harbor.ops.bluontoolbox.com/latest/auth:\$VERSION-\$TIMESTAMP
+                       """
+                    
+                    
                 }
             }
         }
