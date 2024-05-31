@@ -76,7 +76,7 @@ pipeline {
             steps {
                 dir("auth_microservice") {
                     sh "docker login -u ${env.HARBOR_USER} -p ${env.HARBOR_PASSWORD} ${env.HARBOR_URL}"
-                    sh "docker build -t auth:\$(echo $(./.scripts/get-version))-\$(echo $(date +%s)) ."
+                    sh "docker build -t auth:\$(echo \$(./.scripts/get-version))-\$(echo \$(date +%s)) ."
                 }
             }
         }
