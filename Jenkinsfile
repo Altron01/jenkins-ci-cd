@@ -18,13 +18,6 @@ pipeline {
                     - sleep
                   args:
                     - "99999999"
-                  env:
-                    - name: "JENKINS_AGENT_WORKDIR"
-                      value: "/home/jenkins/agent"
-                  volumeMounts:
-                    - mountPath: "/home/jenkins/agent"
-                      name: "workspace-volume"
-                      readOnly: false
                 - name: sonarqube
                   image: sonarsource/sonar-scanner-cli:5.0.1
                   workingDir: "/home/jenkins/agent"
@@ -32,13 +25,6 @@ pipeline {
                     - sleep
                   args:
                     - "99999999"
-                  env:
-                    - name: "JENKINS_AGENT_WORKDIR"
-                      value: "/home/jenkins/agent"
-                  volumeMounts:
-                    - mountPath: "/home/jenkins/agent"
-                      name: "workspace-volume"
-                      readOnly: false
             '''
         }
     }
