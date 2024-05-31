@@ -75,10 +75,10 @@ pipeline {
             }
             steps {
                 dir("auth_microservice") {
-                    sh "VERSION=$(./.scripts/get-version)"
-                    sh "TIMESTAMP=$(date +%s)"
+                    sh "VERSION=\$(./.scripts/get-version)"
+                    sh "TIMESTAMP=\$(date +%s)"
                     sh "docker login -u ${env.HARBOR_USER} -p ${env.HARBOR_PASSWORD} ${env.HARBOR_URL}"
-                    sh "docker build -t auth:$VERSION-$TIMESTAMP ."
+                    sh "docker build -t auth:\$VERSION-\$TIMESTAMP ."
                 }
             }
         }
