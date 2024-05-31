@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "test": " node index.js"
+    "start": "node src/index.js",
+    "test:unit": "jest tests/unit  --coverage --coverageDirectory=coverage/unit",
+    "test:integration": "jest tests/integration  --coverage --coverageDirectory=coverage/integration",
+    "test": "npm run test:unit && npm run test:integration"
   },
   "author": "",
   "license": "ISC",

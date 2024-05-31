@@ -1,5 +1,15 @@
 pipeline {
-    
+    node {
+        checkout scm 
+        /* .. snip .. */
+    }
+    environment {
+      SONARQUBE_TOKEN         = credentials('sonarqube-token')
+      HARBOR_USER_            = credentials('harbor-user-latest')
+      HARBOR_PASSWORD         = credentials('harbor-password-latest')
+      HARBOR_URL              = credentials('harbor-ur')
+      APP_NAME                = 'ms-auth'
+    }
     agent {
         kubernetes {
             yaml '''
@@ -54,14 +64,12 @@ pipeline {
                 container('sonarqube') {
                     withSonarQubeEnv(installationName: 'SonarQube') { // If you have configured more than one global server connection, you can specify its name as configured in Jenkins
                         dir('auth_microservice') {
-                            sh '/opt/sonar-scanner/bin/sonar-scanner -Dsonar.token=squ_400d35a29a6f814a1c35b90bf0096d150ea37759'
+                            sh '/opt/sonar-scanner/bin/sonar-scanner -Dsonar.token=${env.SONARQUBE_TOKEN}'
                         }
                     }
                     
                 }
                 timeout(time: 1, unit: 'HOURS') {
-                    // Parameter indicates whether to set pipeline to UNSTABLE if Quality Gate fails
-                    // true = set pipeline to UNSTABLE, false = don't
                     waitForQualityGate abortPipeline: true
                 }
             }
@@ -72,8 +80,10 @@ pipeline {
             }
             steps {
                 dir('auth_microservice') {
-                    sh 'whoami'
-                    sh "docker build -t abc:0.1.0 ."
+                    sh 'VERSION=$(./.scripts/get-version)'
+                    sh 'TIMESTAMP=$(date +%s)'
+                    sh 'docker login -u ${env.HARBOR_USER} -p ${env.HARBOR_PASSWORD} ${env.HARBOR_URL}'
+                    sh 'docker build -t auth:$VERSION-$TIMESTAMP .'
                 }
             }
         }
