@@ -1,7 +1,7 @@
 pipeline {
     environment {
       SONARQUBE_TOKEN         = credentials("sonarqube-token")
-      HARBOR_USER_            = credentials("harbor-user-latest")
+      HARBOR_USER            = credentials("harbor-user-latest")
       HARBOR_PASSWORD         = credentials("harbor-password-latest")
       HARBOR_URL              = credentials("harbor-url")
       APP_NAME                = "ms-auth"
