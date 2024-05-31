@@ -1,13 +1,9 @@
 pipeline {
-    node {
-        checkout scm 
-        /* .. snip .. */
-    }
     environment {
       SONARQUBE_TOKEN         = credentials('sonarqube-token')
       HARBOR_USER_            = credentials('harbor-user-latest')
       HARBOR_PASSWORD         = credentials('harbor-password-latest')
-      HARBOR_URL              = credentials('harbor-ur')
+      HARBOR_URL              = credentials('harbor-url')
       APP_NAME                = 'ms-auth'
     }
     agent {
@@ -47,6 +43,11 @@ pipeline {
         }
     }
     stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
         stage('Run Unit Test') {
             steps {
                 container('node') {
@@ -72,6 +73,14 @@ pipeline {
                 timeout(time: 1, unit: 'HOURS') {
                     waitForQualityGate abortPipeline: true
                 }
+            }
+        }
+        stage('Checkout on master') {
+            agent {
+                label 'master'
+            }
+            steps {
+                checkout scm
             }
         }
         stage('Build images') {
